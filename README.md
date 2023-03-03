@@ -3,4 +3,4 @@ Kansrijke start draft R script of the risk modelling analysis pipeline using fak
 
 Before running the script, download the sodascience/cbs_validationdata repository (https://github.com/sodascience/cbs_validationdata) and follow the usage instructions (https://github.com/sodascience/cbs_validationdata/blob/main/README.md).
 
-Ensure that the following dependencies are installed: install.packages(c('tidyverse', 'haven', 'cli', 'mice', 'lattice', 'broom', 'pROC', 'caret'), repos = 'https://cloud.r-project.org', dependencies = TRUE)
+Ensure that the following dependencies are installed: install.packages(c('tidyverse', 'haven', 'cli', 'mice', 'lattice', 'broom', 'pROC', 'caret', 'stringr'), repos = 'https://cloud.r-project.org', dependencies = TRUE)
