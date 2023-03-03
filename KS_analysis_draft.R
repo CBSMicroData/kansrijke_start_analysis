@@ -550,8 +550,14 @@ listofmodels <- as.mira(listofmodels)
 fit_pool <- pool(listofmodels)
 summary(fit_pool)
 
-# To extract ORs and 95% CIs and p-values
+# To extract estimates, ORs, and 95% CIs and p-values
 fit_pool_summ <- summary(fit_pool)
+
+fit_pool_est <- cbind(names(readRDS(file = "fit1.rds")$coefficients), fit_pool_summ[,2], fit_pool_summ[,2]-1.96*(fit_pool_summ[,3]), 
+           fit_pool_summ[,2]+1.96*(fit_pool_summ[,3]), fit_pool_summ[,4])
+colnames(fit_pool_est) <- (c("Variable", "estimate", "95% Lower", "95% Upper", "p-value"))
+fit_pool_est
+
 fit_pool_OR <- cbind(names(readRDS(file = "fit1.rds")$coefficients), exp(fit_pool_summ[,2]), exp(fit_pool_summ[,2]-1.96*(fit_pool_summ[,3])), 
            exp(fit_pool_summ[,2]+1.96*(fit_pool_summ[,3])), fit_pool_summ[,4])
 colnames(fit_pool_OR) <- (c("Variable", "OR", "95% Lower", "95% Upper", "p-value"))
@@ -667,6 +673,8 @@ dataset1 <- "Data1imp"
 threshold1 <- as.list(seq(0.2,0.8,0.2))
 
 #### Start loop
+library(pROC)
+library(caret)
 for (i in 1:3) { # Define number of datasets
   # import one imputed dataset (just for outcome)
   Data1imp <- readRDS(file = paste0(dataset1, i, ".rds")) ## Define dataset
@@ -679,11 +687,9 @@ for (i in 1:3) { # Define number of datasets
     misClasificErrorMODEL <- mean(fitMODEL != outcome1) ## Define dataset and outcome
     
     ## AUC
-    library(pROC)
     predictionMODEL <- roc(outcome1, predMODEL) ## Define dataset and outcome
     
     ## sensitivity, specificity, PPV, NPV
-    library(caret)
     mtxMODEL <- confusionMatrix(table(fitMODEL, outcome1))$table ## Define dataset and outcome
     mtxMODEL # columns represent actual outcomes; rows represent predicted outcomes
     mtxMODEL_prop <- prop.table(mtxMODEL, 2)
@@ -944,6 +950,8 @@ threshold1 <- as.list(seq(0.2,0.8,0.2))
 municipality1 <- as.list(as.character(unique(na.omit(Data1imp$gemeentecode_ki))))
 
 #### Start loop
+library(pROC)
+library(caret)
 for (i in 1:3) { # Define number of datasets
   # import one imputed dataset (just for outcome)
   Data1imp <- readRDS(file = paste0(dataset1, i, ".rds")) ## Define dataset
@@ -964,11 +972,9 @@ for (i in 1:3) { # Define number of datasets
       misClasificErrorMODEL <- mean(fitMODEL != outcome1) ## Define dataset and outcome
     
       ## AUC
-      library(pROC)
       predictionMODEL <- roc(outcome1, predMODEL) ## Define dataset and outcome
       
       ## sensitivity, specificity, PPV, NPV
-      library(caret)
       mtxMODEL <- confusionMatrix(table(fitMODEL, outcome1))$table ## Define dataset and outcome
       mtxMODEL # columns represent actual outcomes; rows represent predicted outcomes
       mtxMODEL_prop <- prop.table(mtxMODEL, 2)
