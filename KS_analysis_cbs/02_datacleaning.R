@@ -38,7 +38,7 @@ con <- dbConnect(odbc(),
                  Server = "S0DSQL0141B\\I01",
                  Database = "RA8552",
                  UID = "RA8552",
-                 PWD = "keP452@DR")
+                 PWD = "<fill password of database>")
 # List all tables in SQL
 dbListTables(con)
 
